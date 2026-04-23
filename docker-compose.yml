@@ -1,0 +1,28 @@
+services:
+  app:
+    image: cs2-cup-dashboard:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${HOST_PORT:-5747}:5747"
+    environment:
+      - NODE_ENV=production
+      - PORT=5747
+      - DATA_DIR=/data
+      # Set EDIT_PASSWORD in the .env file (never commit it to git)
+      - EDIT_PASSWORD=${EDIT_PASSWORD:-cup2024}
+    volumes:
+      # Named volume ensures data.json persists across container restarts
+      - cs2_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5747/api/state"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  cs2_data:
+    driver: local

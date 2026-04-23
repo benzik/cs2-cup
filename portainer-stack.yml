@@ -1,0 +1,24 @@
+services:
+  app:
+    image: cs2-cup-dashboard:latest
+    pull_policy: never
+    ports:
+      - "${HOST_PORT:-5747}:5747"
+    environment:
+      - NODE_ENV=production
+      - PORT=5747
+      - DATA_DIR=/data
+      - EDIT_PASSWORD=${EDIT_PASSWORD:-change_me}
+    volumes:
+      - cs2_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5747/api/state"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s
+
+volumes:
+  cs2_data:
+    driver: local
