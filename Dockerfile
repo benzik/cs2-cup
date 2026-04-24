@@ -32,6 +32,6 @@ ENV DATA_DIR=/data
 EXPOSE 5747
 
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-  CMD wget -q --spider http://localhost:5747/api/state || exit 1
+  CMD wget -qO /dev/null http://localhost:5747/api/state || exit 1
 
 CMD ["npx", "tsx", "server.ts"]

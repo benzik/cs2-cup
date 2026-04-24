@@ -18,7 +18,7 @@ services:
       - cs2_data:/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "wget", "-q", "--spider", "http://localhost:5747/api/state"]
+      test: ["CMD", "wget", "-qO", "/dev/null", "http://localhost:5747/api/state"]
       interval: 30s
       timeout: 10s
       retries: 3
