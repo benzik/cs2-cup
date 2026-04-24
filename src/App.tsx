@@ -91,7 +91,7 @@ const INITIAL_STATE: AppState = {
   rosters: { ...ROSTERS },
   rosterChanges: [],
   logEdit: { hidden: [], overrides: {}, custom: [] },
-  eventName: 'Corporate Cup 2024'
+  eventName: 'LIDERA CUP 2026'
 };
 
 const getMatchResult = (match: MatchData) => {
@@ -266,7 +266,6 @@ const MatchScorecard = ({ data, t1, t2, onChange, canEdit, isExporting }: { data
               </div>
 
               <MapInput val={m.t2} canEdit={mapEditable} isExporting={isExporting} isWinner={isMapFinished && t2Val > t1Val} isLoser={isMapFinished && t2Val < t1Val} onChange={v => { const n = [...maps] as any; n[idx].t2 = v; onChange({...data, maps: n}); }} />
-              {isMapLocked && <span className="text-[9px] text-green-400/60 ml-0.5 shrink-0">✓</span>}
             </div>
           );
         });
@@ -841,7 +840,7 @@ function generateLog(
     }
   };
 
-  const evt=appState.eventName??'Corporate Cup';
+  const evt=appState.eventName??'LIDERA CUP 2026';
   const procPF=(data:MatchData,t1:string,t2:string,type:LogEventType,id:string,pool:string[])=>{
     if(t1==='TBD') return;
     getMaps(data,t1,t2,id,true);
@@ -1370,8 +1369,8 @@ export default function App() {
                   <input
                     autoFocus
                     type="text"
-                    defaultValue={appState.eventName??'Corporate Cup 2024'}
-                    onBlur={e=>{saveState({...appState,eventName:e.target.value||'Corporate Cup 2024'});setEditingEventName(false);}}
+                    defaultValue={appState.eventName??'LIDERA CUP 2026'}
+                    onBlur={e=>{saveState({...appState,eventName:e.target.value||'LIDERA CUP 2026'});setEditingEventName(false);}}
                     onKeyDown={e=>{if(e.key==='Enter'){e.currentTarget.blur();}if(e.key==='Escape'){setEditingEventName(false);}}}
                     className="bg-transparent border-b-2 border-density-accent outline-none text-white font-extrabold text-2xl tracking-tight w-72 uppercase"
                   />
@@ -1381,7 +1380,7 @@ export default function App() {
                     title={canEdit?'Нажмите, чтобы изменить':undefined}
                     className={canEdit?'cursor-pointer hover:text-density-accent/80 transition-colors group relative':undefined}
                   >
-                    {(()=>{const parts=(appState.eventName??'Corporate Cup 2024').toUpperCase().split(' ');const last=parts[parts.length-1];const isYr=/^\d{4}$/.test(last);return isYr?<>{parts.slice(0,-1).join(' ')} <span className="text-density-accent">{last}</span></>:<>{parts.join(' ')}</>})()}
+                    {(()=>{const parts=(appState.eventName??'LIDERA CUP 2026').toUpperCase().split(' ');const last=parts[parts.length-1];const isYr=/^\d{4}$/.test(last);return isYr?<>{parts.slice(0,-1).join(' ')} <span className="text-density-accent">{last}</span></>:<>{parts.join(' ')}</>})()}
                     {canEdit&&<Edit3 size={11} className="inline ml-1.5 text-density-text-dim/30 group-hover:text-density-accent/50 transition-colors relative -top-0.5"/>}
                   </span>
                 )}
