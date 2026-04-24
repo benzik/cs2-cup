@@ -1,6 +1,7 @@
 services:
   app:
     image: cs2-cup-dashboard:latest
+    pull_policy: never
     build:
       context: .
       dockerfile: Dockerfile
