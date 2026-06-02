@@ -79,6 +79,7 @@ type AppState = {
   rosterChanges?: RosterChange[];
   logEdit?: LogEdit;
   eventName?: string;
+  twitchChannel?: string;
 };
 
 const INITIAL_STATE: AppState = {
@@ -91,7 +92,8 @@ const INITIAL_STATE: AppState = {
   rosters: { ...ROSTERS },
   rosterChanges: [],
   logEdit: { hidden: [], overrides: {}, custom: [] },
-  eventName: 'LIDERA CUP 2026'
+  eventName: 'LIDERA CUP 2026',
+  twitchChannel: ''
 };
 
 const getMatchResult = (match: MatchData) => {
@@ -1390,7 +1392,19 @@ export default function App() {
           </div>
           
           {!isExporting && (
-            <div className="flex gap-3">
+            <div className="flex gap-3 items-center">
+              {canEdit && (
+                <div className="flex items-center gap-2">
+                  <label className="text-[10px] text-density-text-dim uppercase tracking-wider">Twitch:</label>
+                  <input
+                    type="text"
+                    placeholder="channel_name"
+                    value={appState.twitchChannel ?? ''}
+                    onChange={e => saveState({...appState, twitchChannel: e.target.value})}
+                    className="bg-density-bg border border-density-line px-2 py-1 text-xs rounded outline-none focus:border-density-accent text-density-text w-32"
+                  />
+                </div>
+              )}
               {canEdit ? (
                 <div className="flex gap-2">
                   <button onClick={() => setShowResetConfirm(true)} className="flex items-center gap-1.5 border border-red-500/40 text-red-400 px-3 py-1.5 text-xs rounded hover:bg-red-500/10 transition">
@@ -1449,6 +1463,23 @@ export default function App() {
                    <BracketNode team1={finalTeam1} team2={finalTeam2} data={appState.final} onChange={(d: MatchData) => saveState({...appState, final: d})} isFinal={true} canEdit={canEdit} isExporting={isExporting} widthClass="w-full max-w-[420px]" isLocked={finalLocked} />
                 </div>
              </div>
+
+             {/* TWITCH STREAM */}
+             {appState.twitchChannel && appState.twitchChannel.trim() && !isExporting && (
+               <div className="bg-density-card border border-density-accent/40 shadow-[0_0_16px_rgba(138,43,226,0.15)] rounded-xl p-4 w-full">
+                 <h3 className="text-[10px] font-semibold uppercase tracking-[0.12em] text-density-accent mb-3 flex items-center gap-2">
+                   <span className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                   Live Stream
+                 </h3>
+                 <div className="relative w-full" style={{paddingBottom: '56.25%'}}>
+                   <iframe
+                     src={`https://player.twitch.tv/?channel=${appState.twitchChannel.trim().replace(/^https?:\/\/(www\.)?twitch\.tv\//, '')}&parent=${window.location.hostname}&muted=false`}
+                     className="absolute top-0 left-0 w-full h-full rounded"
+                     allowFullScreen
+                   />
+                 </div>
+               </div>
+             )}
 
              {/* SEMIFINALS WIDGET */}
              <div className="bg-density-card border border-density-line rounded-xl p-5 flex flex-col items-center w-full shadow-[0_2px_24px_rgba(0,0,0,0.45)]">
